@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReconcilePro — Inteligência financeira pra quem vende em marketplaces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#4f378a;
+  --primary-dark:#22005d;
+  --accent:#FFD566;
+  --success:#0d6e3f;
+  --bg:#fdf7ff;
+  --danger:#ba1a1a;
+  --text:#1d1b20;
+  --text2:#49454e;
+  --white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+.mono{font-family:'JetBrains Mono',monospace;font-weight:800}
+
+/* ── NAVBAR ── */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:0 48px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(253,247,255,0.75);backdrop-filter:blur(14px);
+  transition:background .3s ease,box-shadow .3s ease;
+}
+.navbar.scrolled{background:rgba(253,247,255,0.97);box-shadow:0 2px 24px rgba(79,55,138,.1)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,#4f378a,#22005d);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:white;font-weight:800;font-size:13px;position:relative;letter-spacing:-.5px
+}
+.logo-star{position:absolute;top:-4px;right:-4px;font-size:10px;color:var(--accent)}
+.logo-wordmark{font-size:18px;font-weight:700;color:var(--text)}
+.logo-wordmark span{color:var(--primary)}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{text-decoration:none;color:var(--text2);font-size:15px;font-weight:600;transition:color .2s}
+.nav-links a:hover{color:var(--primary)}
+.nav-ctas{display:flex;gap:12px;align-items:center}
+.btn-outline{
+  padding:10px 20px;border:1.5px solid var(--primary);border-radius:24px;
+  background:transparent;color:var(--primary);font-family:'Inter',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;transition:background .2s
+}
+.btn-outline:hover{background:rgba(79,55,138,.06)}
+.btn-primary{
+  padding:10px 22px;background:var(--primary);border:none;border-radius:24px;
+  color:white;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px
+}
+.cta-btn{display:inline-flex;align-items:center}
+
+/* ── HERO ── */
+.hero-wrap{background:linear-gradient(160deg,#fdf7ff 0%,#ede7f6 100%);padding-top:68px}
+.hero{
+  max-width:1280px;margin:0 auto;
+  padding:80px 48px 80px;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(79,55,138,.1);border:1px solid rgba(79,55,138,.2);
+  color:var(--primary);padding:8px 16px;border-radius:100px;
+  font-size:13px;font-weight:600;margin-bottom:24px
+}
+.hero-headline{
+  font-size:clamp(40px,5vw,58px);font-weight:800;
+  line-height:1.12;margin-bottom:20px;letter-spacing:-1.5px
+}
+.hero-headline .line2{color:var(--primary)}
+.hero-subtitle{
+  font-size:18px;color:var(--text2);line-height:1.7;
+  margin-bottom:36px;max-width:520px
+}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+.hero-ctas .btn-primary{padding:14px 28px;font-size:16px;border-radius:28px}
+.hero-ctas .btn-outline{padding:13px 24px;font-size:16px;border-radius:28px}
+.hero-trust{display:flex;gap:20px;font-size:13px;color:var(--text2);font-weight:600;flex-wrap:wrap}
+.hero-trust span::before{content:"✓ ";color:var(--success)}
+.hero-mockup{
+  position:relative;background:white;border-radius:20px;padding:24px;
+  box-shadow:0 8px 48px rgba(79,55,138,.18);border:1px solid rgba(79,55,138,.1)
+}
+.mockup-header{display:flex;align-items:center;gap:8px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #f0e9f9}
+.mdots{display:flex;gap:5px}
+.mdot{width:10px;height:10px;border-radius:50%}
+.mdot:nth-child(1){background:#ff5f57}
+.mdot:nth-child(2){background:#ffbd2e}
+.mdot:nth-child(3){background:#28c840}
+.mockup-title{font-size:12px;color:var(--text2);font-weight:600;margin-left:4px}
+.mockup-table{width:100%;font-size:12px;border-collapse:collapse;margin-bottom:14px}
+.mockup-table th{background:#f3e5f5;color:var(--primary);padding:7px 10px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.mockup-table td{padding:7px 10px;border-bottom:1px solid #f9f3ff;color:var(--text)}
+.badge-g{display:inline-block;background:#e8f5e9;color:var(--success);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700}
+.badge-r{display:inline-block;background:#fdecea;color:var(--danger);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700}
+.floating-card{
+  position:absolute;border-radius:14px;padding:10px 14px;
+  font-size:12px;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,.12);white-space:nowrap
+}
+.fc-label{font-size:10px;opacity:.8;font-weight:600;display:block;margin-bottom:2px}
+.fc-green{background:#0d6e3f;color:white;top:-16px;right:-8px}
+.fc-purple{background:var(--primary);color:white;bottom:56px;right:-14px}
+.fc-gold{background:var(--accent);color:var(--primary-dark);bottom:-14px;left:14px}
+
+/* ── MARQUEE ── */
+.marquee-section{padding:40px 48px;background:white;border-top:1px solid #f0e9f9;border-bottom:1px solid #f0e9f9}
+.marquee-title{text-align:center;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:24px;text-transform:uppercase;letter-spacing:1px}
+.marquee-wrapper{overflow:hidden}
+.marquee-track{display:inline-flex;gap:48px;animation:marquee-scroll 35s linear infinite;white-space:nowrap}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marquee-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{font-size:15px;font-weight:700;color:#bbb;cursor:default;transition:color .2s}
+.marquee-item:hover{color:var(--primary)}
+
+/* ── METRICS ── */
+.metrics-section{padding:60px 48px}
+.metrics-banner{
+  max-width:1200px;margin:0 auto;background:var(--primary-dark);
+  border-radius:24px;padding:56px 48px;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;align-items:center;
+  position:relative;overflow:hidden
+}
+.metrics-banner::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:300px;height:300px;border-radius:50%;background:rgba(255,213,102,.06)
+}
+.metric-item{text-align:center;position:relative}
+.metric-item+.metric-item::before{
+  content:'';position:absolute;left:-16px;top:20%;
+  height:60%;width:1px;background:rgba(255,255,255,.15)
+}
+.metric-value{display:block;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:clamp(36px,5vw,52px);color:var(--accent);line-height:1;margin-bottom:8px}
+.metric-label{font-size:15px;color:rgba(255,255,255,.7);line-height:1.4}
+.metrics-footer{
+  grid-column:1/-1;text-align:center;padding-top:32px;
+  border-top:1px solid rgba(255,255,255,.1);
+  display:flex;flex-direction:column;align-items:center;gap:20px
+}
+.metrics-footer p{font-size:13px;color:rgba(255,255,255,.45);font-style:italic}
+.btn-white{
+  padding:14px 32px;background:white;border:none;border-radius:28px;
+  color:var(--primary);font-family:'Inter',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;text-decoration:none;display:inline-flex;align-items:center
+}
+
+/* ── SECTION COMMON ── */
+.section-wrap{max-width:1200px;margin:0 auto;padding:80px 48px}
+.section-title{font-size:clamp(28px,4vw,44px);font-weight:800;margin-bottom:14px;letter-spacing:-.5px;line-height:1.15}
+.section-sub{font-size:18px;color:var(--text2)}
+
+/* ── COMPARATIVO ── */
+.comp-header{text-align:center;margin-bottom:48px}
+.comp-table{width:100%;border-collapse:separate;border-spacing:0;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(79,55,138,.1)}
+.comp-table th{padding:18px 24px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.comp-table th:first-child{background:#f5f5f5;color:var(--text2)}
+.comp-table th:nth-child(2){background:#fdecea;color:var(--danger)}
+.comp-table th:nth-child(3){background:#e8f5e9;color:var(--success)}
+.comp-table td{padding:15px 24px;font-size:15px;border-bottom:1px solid #f5f5f5}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table td:first-child{font-weight:600;background:white}
+.comp-table td:nth-child(2){background:#fffafa;color:var(--danger)}
+.comp-table td:nth-child(3){background:#f9fff9;color:var(--success);font-weight:600}
+.comp-footer{text-align:center;margin-top:24px;font-size:15px;color:var(--text2);font-style:italic}
+
+/* ── FEATURE BLOCKS ── */
+.features-section{padding:80px 48px}
+.features-header{text-align:center;max-width:700px;margin:0 auto 72px}
+.feature-block{
+  max-width:1200px;margin:0 auto 72px;
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+  border-radius:28px;padding:56px
+}
+.feature-block.rev{direction:rtl}
+.feature-block.rev>*{direction:ltr}
+.fb1{background:#f3e5f5}.fb2{background:#e8f5e9}.fb3{background:#fff8e1}
+.fb-title{font-size:30px;font-weight:800;margin-bottom:24px;line-height:1.2;letter-spacing:-.5px}
+.acc-p{color:var(--primary)}.acc-g{color:var(--success)}.acc-gold{color:#b8860b}
+.fb-bullets{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+.fb-bullet{display:flex;gap:12px;font-size:16px;line-height:1.5}
+.bicon{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-top:2px}
+.bi-p{background:rgba(79,55,138,.12);color:var(--primary)}
+.bi-g{background:rgba(13,110,63,.12);color:var(--success)}
+.bi-gold{background:rgba(184,134,11,.12);color:#b8860b}
+.fb-mockup{background:white;border-radius:18px;padding:22px;box-shadow:0 8px 40px rgba(0,0,0,.08)}
+
+/* pipeline */
+.pipeline-title{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:18px;text-transform:uppercase;letter-spacing:1px}
+.pipeline-track{display:flex;align-items:center}
+.pipeline-step{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;position:relative}
+.pipeline-step:not(:last-child)::after{content:'';position:absolute;left:50%;top:20px;width:100%;height:2px;background:#e0d6f0}
+.pipeline-dot{width:40px;height:40px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;position:relative;z-index:1}
+.pipeline-label{font-size:11px;font-weight:600;color:var(--text2);text-align:center}
+
+/* waterfall */
+.wf-title{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+.wf-bars{display:flex;align-items:flex-end;gap:8px;height:120px}
+.wf-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+.wf-bar{width:100%;border-radius:6px 6px 0 0}
+.wf-label{font-size:10px;font-weight:600;color:var(--text2);text-align:center;line-height:1.2}
+
+/* ── IA SECTION ── */
+.ia-section{background:linear-gradient(135deg,#22005d,#4f378a);padding:80px 48px}
+.ia-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.ia-label{display:inline-flex;align-items:center;gap:8px;background:rgba(255,213,102,.15);border:1px solid rgba(255,213,102,.3);color:var(--accent);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:20px;text-transform:uppercase;letter-spacing:.5px}
+.ia-title{font-size:clamp(28px,4vw,40px);font-weight:800;color:white;margin-bottom:16px;line-height:1.15;letter-spacing:-.5px}
+.ia-sub{font-size:17px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:32px}
+.ia-features{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:36px}
+.ia-feature{display:flex;gap:12px;font-size:15px;color:rgba(255,255,255,.85)}
+.ia-feature::before{content:"✦";color:var(--accent);flex-shrink:0;font-size:12px;margin-top:3px}
+.ia-chat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:24px;backdrop-filter:blur(8px)}
+.ia-chat-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ia-dot-live{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;animation:pulse-dot 1.5s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+.chat-bubble{border-radius:14px;padding:12px 16px;font-size:14px;margin-bottom:8px;max-width:85%;line-height:1.5}
+.chat-user{background:rgba(255,255,255,.12);color:white;margin-left:auto;border-radius:14px 14px 4px 14px}
+.chat-ai{background:rgba(255,213,102,.15);border:1px solid rgba(255,213,102,.25);color:rgba(255,255,255,.9);border-radius:14px 14px 14px 4px}
+.chat-ai strong{color:var(--accent)}
+.chat-typing{display:flex;gap:4px;align-items:center;padding:10px 16px}
+.chat-typing span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);animation:typing 1.2s ease-in-out infinite}
+.chat-typing span:nth-child(2){animation-delay:.2s}
+.chat-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,80%,100%{transform:scale(1);opacity:.4}40%{transform:scale(1.2);opacity:1}}
+
+/* ── FEATURES GRID ── */
+.fg-section{padding:80px 48px;background:var(--primary-dark)}
+.fg-title{text-align:center;color:white;font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:12px;letter-spacing:-.5px}
+.fg-sub{text-align:center;color:rgba(255,255,255,.55);font-size:17px;margin-bottom:48px}
+.fg-grid{max-width:1200px;margin:0 auto 48px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.feature-card{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:28px 22px;cursor:default
+}
+.fc-icon{font-size:28px;margin-bottom:12px;display:block}
+.fc-name{font-size:15px;font-weight:700;color:white;margin-bottom:8px}
+.fc-desc{font-size:13px;color:rgba(255,255,255,.55);line-height:1.5}
+.fg-cta{text-align:center}
+.btn-outline-white{
+  padding:14px 32px;border:1.5px solid rgba(255,255,255,.5);border-radius:28px;
+  background:transparent;color:white;font-family:'Inter',sans-serif;
+  font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;transition:background .2s,border-color .2s
+}
+.btn-outline-white:hover{background:rgba(255,255,255,.1);border-color:white}
+
+/* ── DRE SECTION ── */
+.dre-section{padding:80px 48px;background:white}
+.dre-inner{max-width:1200px;margin:0 auto}
+.dre-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-top:56px}
+.dre-steps{display:flex;flex-direction:column;gap:0}
+.dre-step{display:flex;gap:20px;position:relative;padding-bottom:32px}
+.dre-step:last-child{padding-bottom:0}
+.dre-step:not(:last-child)::before{content:'';position:absolute;left:19px;top:40px;bottom:0;width:2px;background:#f0e9f9}
+.dre-step-num{
+  width:40px;height:40px;border-radius:50%;background:var(--primary);
+  color:white;font-weight:800;font-size:15px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;position:relative;z-index:1
+}
+.dre-step-content h4{font-size:17px;font-weight:700;margin-bottom:6px}
+.dre-step-content p{font-size:14px;color:var(--text2);line-height:1.6}
+.dre-visual{background:#fdf7ff;border-radius:20px;padding:28px;border:1px solid #f0e9f9}
+.dre-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.dre-header h4{font-size:14px;font-weight:700;color:var(--text2)}
+.dre-badge-live{background:#e8f5e9;color:var(--success);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px}
+.dre-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f0e9f9;font-size:14px}
+.dre-row:last-child{border-bottom:none}
+.dre-row.total{font-weight:800;font-size:16px;padding-top:14px;margin-top:6px}
+.dre-row-label{color:var(--text2)}
+.dre-row-value{font-family:'JetBrains Mono',monospace;font-weight:800}
+.dre-row-value.green{color:var(--success)}
+.dre-row-value.red{color:var(--danger)}
+.dre-row-value.gold{color:#b8860b}
+.dre-bar-wrap{margin-top:20px}
+.dre-bar-label{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px}
+.dre-bar-bg{background:#f0e9f9;border-radius:8px;height:10px;overflow:hidden}
+.dre-bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--primary),var(--accent))}
+
+/* ── DEVOLUÇÕES SECTION ── */
+.dev-section{padding:80px 48px;background:#f3e5f5}
+.dev-inner{max-width:1200px;margin:0 auto}
+.dev-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:56px}
+.dev-timeline{display:flex;flex-direction:column;gap:0}
+.dev-step{display:flex;gap:16px;position:relative;padding-bottom:28px}
+.dev-step:last-child{padding-bottom:0}
+.dev-step:not(:last-child)::before{content:'';position:absolute;left:17px;top:36px;bottom:0;width:2px;background:rgba(79,55,138,.15)}
+.dev-icon-wrap{
+  width:36px;height:36px;border-radius:50%;background:var(--primary);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;position:relative;z-index:1
+}
+.dev-content h4{font-size:16px;font-weight:700;margin-bottom:4px}
+.dev-content p{font-size:13px;color:var(--text2);line-height:1.5}
+.dev-mockup{background:white;border-radius:20px;padding:24px;box-shadow:0 8px 40px rgba(79,55,138,.1)}
+.dev-mockup-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #f0e9f9}
+.dev-mockup-header h4{font-size:14px;font-weight:700}
+.dev-badge{background:#e8f5e9;color:var(--success);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px}
+.dev-item{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #f9f3ff}
+.dev-item:last-child{border-bottom:none}
+.dev-item-icon{width:36px;height:36px;border-radius:10px;background:#f3e5f5;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.dev-item-info{flex:1}
+.dev-item-name{font-size:13px;font-weight:700}
+.dev-item-sub{font-size:12px;color:var(--text2)}
+.dev-item-status{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px}
+.dev-status-ok{background:#e8f5e9;color:var(--success)}
+.dev-status-p{background:#fff8e1;color:#b8860b}
+.dev-nfe-row{margin-top:16px;background:#f3e5f5;border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.dev-nfe-row span{font-size:13px;font-weight:600;color:var(--primary)}
+.dev-nfe-row button{background:var(--primary);color:white;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer}
+
+/* ── TESTIMONIALS ── */
+.test-section{padding:80px 48px;background:#f3e5f5;overflow:hidden}
+.test-title{text-align:center;font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:48px}
+.test-title span{color:var(--primary)}
+.test-wrapper{overflow:hidden;cursor:grab}
+.testimonial-track{display:flex;gap:24px;width:max-content}
+.testimonial-card{
+  background:white;border-radius:18px;padding:28px;width:360px;flex-shrink:0;
+  border-left:3px solid var(--primary);box-shadow:0 2px 12px rgba(79,55,138,.08)
+}
+.t-stars{color:var(--accent);font-size:16px;margin-bottom:12px}
+.t-text{font-size:15px;color:var(--text);line-height:1.6;margin-bottom:18px;font-style:italic}
+.t-name{font-weight:700;font-size:14px}
+.t-role{font-size:12px;color:var(--text2);margin-top:2px}
+
+/* ── PRICING ── */
+.pricing-section{padding:80px 48px;max-width:1200px;margin:0 auto}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:24px}
+.pricing-card{
+  background:white;border-radius:24px;padding:36px 32px;
+  border:1.5px solid #f0e9f9;position:relative;cursor:default
+}
+.pricing-card.popular{border-color:var(--primary);box-shadow:0 8px 40px rgba(79,55,138,.15)}
+.pricing-badge{
+  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  background:var(--primary);color:white;padding:5px 16px;border-radius:20px;
+  font-size:12px;font-weight:700;white-space:nowrap
+}
+.p-plan{font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.p-desc{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.4}
+.p-price{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:40px;color:var(--primary);line-height:1}
+.p-price-lbl{font-size:13px;color:var(--text2);margin-bottom:28px}
+.p-features{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px}
+.p-features li{display:flex;gap:10px;font-size:14px}
+.p-features li::before{content:"✓";color:var(--success);font-weight:700;flex-shrink:0}
+.pricing-card .btn-primary,.pricing-card .btn-outline{width:100%;justify-content:center;padding:14px;font-size:15px;border-radius:16px}
+
+/* ── CERTS ── */
+.certs-section{padding:80px 48px;background:white}
+.certs-inner{max-width:1200px;margin:0 auto}
+.certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:48px}
+.cert-card{background:var(--bg);border-radius:18px;padding:32px 28px;border:1px solid #f0e9f9;cursor:default}
+.cert-icon{font-size:32px;margin-bottom:12px;display:block}
+.cert-title{font-size:17px;font-weight:700;margin-bottom:8px}
+.cert-desc{font-size:14px;color:var(--text2);line-height:1.5}
+.logos-strip{display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
+.logos-strip span{font-size:14px;font-weight:700;color:#bbb;cursor:default;transition:color .2s}
+.logos-strip span:hover{color:var(--primary)}
+
+/* ── FAQ ── */
+.faq-section{padding:80px 48px;max-width:800px;margin:0 auto}
+.faq-list{display:flex;flex-direction:column;gap:12px}
+.faq-item{background:white;border-radius:16px;border:1px solid #f0e9f9;overflow:hidden;cursor:pointer}
+.faq-question{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:16px;user-select:none}
+.faq-icon{width:28px;height:28px;border-radius:50%;background:#f3e5f5;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0}
+.faq-content{height:0;opacity:0;overflow:hidden;padding:0 24px}
+.faq-answer{padding:0 0 18px;font-size:15px;color:var(--text2);line-height:1.6}
+
+/* ── CTA FINAL ── */
+.cta-final-section{padding:60px 48px 80px}
+.cta-final-block{
+  max-width:860px;margin:0 auto;
+  background:linear-gradient(135deg,#4f378a,#22005d);
+  border-radius:28px;padding:72px 60px;text-align:center;
+  position:relative;overflow:hidden
+}
+.cta-final-block::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:rgba(255,213,102,.05)}
+.cta-hl{font-size:clamp(38px,6vw,54px);font-weight:800;color:white;margin-bottom:14px;letter-spacing:-1px}
+.cta-sub{font-size:18px;color:#c9b8e8;margin-bottom:44px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.5}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+.btn-white-solid{
+  padding:16px 36px;background:white;color:var(--primary);
+  font-family:'Inter',sans-serif;font-size:16px;font-weight:700;
+  border-radius:28px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center
+}
+.btn-outline-white-lg{
+  padding:15px 32px;border:2px solid rgba(255,255,255,.5);border-radius:28px;
+  background:transparent;color:white;font-family:'Inter',sans-serif;
+  font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center
+}
+.cta-trust{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:14px;color:rgba(255,255,255,.6);font-weight:600}
+.cta-trust span::before{content:"✓ ";color:rgba(255,213,102,.8)}
+
+/* ── FOOTER ── */
+footer{background:#1d1b20;padding:72px 48px 32px}
+.footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px}
+.footer-desc{font-size:14px;color:rgba(255,255,255,.45);line-height:1.6;margin:16px 0 22px}
+.footer-socials{display:flex;gap:10px;flex-wrap:wrap}
+.f-social{padding:7px 14px;background:rgba(255,255,255,.07);border-radius:20px;text-decoration:none;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);transition:background .2s,color .2s}
+.f-social:hover{background:rgba(255,255,255,.14);color:white}
+.f-col-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:11px}
+.footer-links a{text-decoration:none;font-size:14px;color:rgba(255,255,255,.55);transition:color .2s}
+.footer-links a:hover{color:white}
+.footer-bottom{max-width:1200px;margin:0 auto;padding-top:28px;border-top:1px solid rgba(255,255,255,.08)}
+.footer-copy{font-size:13px;color:rgba(255,255,255,.3);margin-bottom:8px}
+.footer-disc{font-size:12px;color:rgba(255,255,255,.18);line-height:1.5}
+.footer-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.footer-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#4f378a,#22005d);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:12px;position:relative}
+.footer-logo-word{color:white;font-size:16px;font-weight:700}
+.footer-logo-word span{color:#c9b8e8}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar">
+  <a href="#" class="nav-logo">
+    <div class="logo-icon">RP<span class="logo-star">★</span></div>
+    <span class="logo-wordmark">Reconcile<span>Pro</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#funcionalidades">Funcionalidades</a></li>
+    <li><a href="#dre">DRE</a></li>
+    <li><a href="#devolucoes">Devoluções</a></li>
+    <li><a href="#ia">IA Financeira</a></li>
+    <li><a href="#precos">Preços</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-ctas">
+    <a href="#" class="btn-outline cta-btn">Agendar demo</a>
+    <a href="https://app.reconcilepro.com.br/signup" class="btn-primary cta-btn">Trial grátis — 14 dias</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero-wrap">
+  <div class="hero">
+    <div>
+      <div class="hero-badge">⭐ Trial gratuito · 14 dias · sem cartão</div>
+      <h1 class="hero-headline">
+        <span>Onde está o seu</span><br>
+        <span class="line2">dinheiro agora?</span>
+      </h1>
+      <p class="hero-subtitle">ReconcilePro rastreia, concilia e audita cada centavo das suas vendas em marketplaces — do clique de compra ao repasse na conta. DRE completa, devoluções automatizadas e IA financeira integrada.</p>
+      <div class="hero-ctas">
+        <a href="https://app.reconcilepro.com.br/signup" class="btn-primary cta-btn">Começar trial grátis</a>
+        <a href="#" class="btn-outline cta-btn">Agendar demo ao vivo</a>
+      </div>
+      <div class="hero-trust">
+        <span>Sem cartão</span>
+        <span>Conecta em 2 min</span>
+        <span>Cancele quando quiser</span>
+      </div>
+    </div>
+    <div class="hero-mockup">
+      <div class="floating-card floating-card fc-green">
+        <span class="fc-label">Conciliado ✓</span>+R$ 12.890 recuperados
+      </div>
+      <div class="mockup-header">
+        <div class="mdots"><div class="mdot"></div><div class="mdot"></div><div class="mdot"></div></div>
+        <span class="mockup-title">ReconcilePro — Painel Financeiro</span>
+      </div>
+      <table class="mockup-table">
+        <thead><tr><th>Pedido</th><th>Marketplace</th><th>Valor</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>#4821</td><td>Mercado Livre</td><td>R$ 289,90</td><td><span class="badge-g">Conciliado ✓</span></td></tr>
+          <tr><td>#4820</td><td>Shopee</td><td>R$ 145,00</td><td><span class="badge-r">Divergência ⚠</span></td></tr>
+          <tr><td>#4819</td><td>Amazon</td><td>R$ 512,50</td><td><span class="badge-g">Conciliado ✓</span></td></tr>
+          <tr><td>#4818</td><td>TikTok Shop</td><td>R$ 78,00</td><td><span class="badge-g">Conciliado ✓</span></td></tr>
+        </tbody>
+      </table>
+      <div style="display:flex;gap:10px;font-size:12px">
+        <div style="background:#e8f5e9;color:#0d6e3f;border-radius:8px;padding:8px 12px;font-weight:700;flex:1">✓ 847 pedidos · 94,3% match auto</div>
+        <div style="background:#fff8e1;color:#b8860b;border-radius:8px;padding:8px 12px;font-weight:700;flex:1">💰 Lucro líquido: R$ 38.420</div>
+      </div>
+      <div class="floating-card floating-card fc-purple">
+        <span class="fc-label">Match automático</span>94,3% — 847 pedidos
+      </div>
+      <div class="floating-card floating-card fc-gold">
+        <span class="fc-label">DRE em tempo real</span>Lucro: R$ 38.420
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MARQUEE ═══ -->
+<section class="marquee-section" id="integracoes">
+  <p class="marquee-title">Conecta com os marketplaces e sistemas que você já usa</p>
+  <div class="marquee-wrapper">
+    <div class="marquee-track">
+      <span class="marquee-item">Mercado Livre</span><span class="marquee-item">Shopee</span><span class="marquee-item">Amazon</span><span class="marquee-item">TikTok Shop</span><span class="marquee-item">Magalu</span><span class="marquee-item">SHEIN</span><span class="marquee-item">Temu</span><span class="marquee-item">AliExpress</span><span class="marquee-item">Americanas</span><span class="marquee-item">Nuvemshop</span><span class="marquee-item">Shopify</span><span class="marquee-item">Bling</span><span class="marquee-item">Tiny</span><span class="marquee-item">Itaú</span><span class="marquee-item">Banco do Brasil</span><span class="marquee-item">Bradesco</span><span class="marquee-item">Santander</span><span class="marquee-item">Domínio</span><span class="marquee-item">Focus NFe</span>
+      <span class="marquee-item">Mercado Livre</span><span class="marquee-item">Shopee</span><span class="marquee-item">Amazon</span><span class="marquee-item">TikTok Shop</span><span class="marquee-item">Magalu</span><span class="marquee-item">SHEIN</span><span class="marquee-item">Temu</span><span class="marquee-item">AliExpress</span><span class="marquee-item">Americanas</span><span class="marquee-item">Nuvemshop</span><span class="marquee-item">Shopify</span><span class="marquee-item">Bling</span><span class="marquee-item">Tiny</span><span class="marquee-item">Itaú</span><span class="marquee-item">Banco do Brasil</span><span class="marquee-item">Bradesco</span><span class="marquee-item">Santander</span><span class="marquee-item">Domínio</span><span class="marquee-item">Focus NFe</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ METRICS ═══ -->
+<section class="metrics-section">
+  <div class="metrics-banner">
+    <div class="metric-item grow-element">
+      <span class="metric-value mono" id="kpi1">R$ 0</span>
+      <span class="metric-label">recuperados/mês por cliente em divergências</span>
+    </div>
+    <div class="metric-item grow-element">
+      <span class="metric-value mono" id="kpi2">0%</span>
+      <span class="metric-label">de match automático na conciliação</span>
+    </div>
+    <div class="metric-item grow-element">
+      <span class="metric-value mono" id="kpi3">0h</span>
+      <span class="metric-label">economizadas por mês por seller</span>
+    </div>
+    <div class="metrics-footer">
+      <p>Média dos últimos 90 dias · sellers com 500–5.000 pedidos/mês</p>
+      <a href="https://app.reconcilepro.com.br/signup" class="btn-white cta-btn">Começar trial grátis — 14 dias sem cartão</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMPARATIVO ═══ -->
+<div class="section-wrap">
+  <div class="comp-header">
+    <h2 class="section-title scroll-into-view">Como era antes. Como é agora.</h2>
+    <p class="section-sub scroll-into-view">Cada tarefa que te consome horas virou segundos.</p>
+  </div>
+  <table class="comp-table scroll-into-view">
+    <thead>
+      <tr><th>Tarefa</th><th>❌ Antes</th><th>✅ Com ReconcilePro</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Processar devolução</td><td>5 min em 3 sistemas ❌</td><td>5 segundos em 1 clique ✅</td></tr>
+      <tr><td>Fechar mês com contador</td><td>4h juntando planilhas ❌</td><td>1 clique gera o ZIP ✅</td></tr>
+      <tr><td>Descobrir divergência</td><td>Auditor humano (raramente) ❌</td><td>Automático 24/7 ✅</td></tr>
+      <tr><td>Saber lucro real</td><td>Esperar dia 10 do mês ❌</td><td>DRE em tempo real ✅</td></tr>
+      <tr><td>Contestar cobrança errada</td><td>E-mail manual ❌</td><td>Contestação automática ✅</td></tr>
+      <tr><td>Emitir NF-e de devolução</td><td>Sistema fiscal separado ❌</td><td>Emissão integrada CFOP 1202 ✅</td></tr>
+    </tbody>
+  </table>
+  <p class="comp-footer scroll-into-view">Sellers que usam ReconcilePro economizam em média 15 horas por mês</p>
+</div>
+
+<!-- ═══ FEATURES PRINCIPAIS ═══ -->
+<section class="features-section" id="funcionalidades">
+  <div class="features-header">
+    <h2 class="section-title scroll-into-view">Da venda ao lucro líquido real — tudo em uma plataforma</h2>
+    <p class="section-sub scroll-into-view">Conciliação, DRE completa, devoluções, IA e muito mais.</p>
+  </div>
+
+  <!-- Bloco 1: Conciliação -->
+  <div class="feature-block fb1 scroll-into-view">
+    <div>
+      <h3 class="fb-title">Conciliação Financeira <span class="acc-p">Inteligente</span></h3>
+      <ul class="fb-bullets">
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-p">✓</span><span>Motor 24/7 que cruza pedidos × repasses × extrato — 94,3% resolvidos sem intervenção humana</span></li>
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-p">✓</span><span>Detecta 10 tipos de divergência automaticamente com evidências prontas para contestação</span></li>
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-p">✓</span><span>Conciliação bancária integrada: repasses do marketplace vs. extrato bancário em uma única visão</span></li>
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-p">✓</span><span>Média de R$ 12.890 recuperados/mês — você só clica "Contestar"</span></li>
+      </ul>
+      <a href="https://app.reconcilepro.com.br/signup" class="btn-primary cta-btn">Começar trial grátis</a>
+    </div>
+    <div class="fb-mockup">
+      <div class="mockup-header">
+        <div class="mdots"><div class="mdot"></div><div class="mdot"></div><div class="mdot"></div></div>
+        <span class="mockup-title">Conciliação — Hoje</span>
+      </div>
+      <table class="mockup-table">
+        <thead><tr><th>Pedido</th><th>Esperado</th><th>Recebido</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>#5021</td><td>R$ 189,90</td><td>R$ 189,90</td><td><span class="badge-g">Conciliado ✓</span></td></tr>
+          <tr><td>#5020</td><td>R$ 340,00</td><td>R$ 298,00</td><td><span class="badge-r">Divergência ⚠</span></td></tr>
+          <tr><td>#5019</td><td>R$ 95,50</td><td>R$ 95,50</td><td><span class="badge-g">Conciliado ✓</span></td></tr>
+          <tr><td>#5018</td><td>R$ 720,00</td><td>R$ 720,00</td><td><span class="badge-g">Conciliado ✓</span></td></tr>
+        </tbody>
+      </table>
+      <div style="background:#f3e5f5;border-radius:10px;padding:12px 16px;font-size:12px;font-weight:700;color:#4f378a">⚡ R$ 42,00 em divergências detectadas — contestação automática gerada</div>
+    </div>
+  </div>
+
+  <!-- Bloco 2: Devoluções -->
+  <div class="feature-block fb2 rev scroll-into-view" id="devolucoes">
+    <div>
+      <h3 class="fb-title">Devoluções em <span class="acc-g">1 Clique</span></h3>
+      <ul class="fb-bullets">
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-g">✓</span><span>Detecta, classifica e vincula ao pedido original automaticamente — você só aprova</span></li>
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-g">✓</span><span>5 minutos → 5 segundos: 6 passos em 3 sistemas virou 1 clique no painel</span></li>
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-g">✓</span><span>Emite NF-e de devolução (CFOP 1202/2202) e recupera ICMS/PIS/COFINS automaticamente</span></li>
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-g">✓</span><span>Impacto financeiro calculado em tempo real: custo, margem impactada e crédito fiscal</span></li>
+      </ul>
+    </div>
+    <div class="fb-mockup pipeline-demo">
+      <p class="pipeline-title">Pipeline de devolução automático</p>
+      <div class="pipeline-track" style="margin-bottom:20px">
+        <div class="pipeline-step"><div class="pipeline-dot">📦</div><span class="pipeline-label">Detectado</span></div>
+        <div class="pipeline-step"><div class="pipeline-dot">🔍</div><span class="pipeline-label">Classificado</span></div>
+        <div class="pipeline-step"><div class="pipeline-dot">📄</div><span class="pipeline-label">NF-e emitida</span></div>
+        <div class="pipeline-step"><div class="pipeline-dot">✅</div><span class="pipeline-label">Concluído</span></div>
+      </div>
+      <div style="background:#e8f5e9;border-radius:10px;padding:12px 16px;font-size:12px;color:#0d6e3f;font-weight:700">⏱ Antes: 5 min em 3 sistemas · Agora: 5 segundos em 1 clique</div>
+    </div>
+  </div>
+
+  <!-- Bloco 3: DRE -->
+  <div class="feature-block fb3 scroll-into-view">
+    <div>
+      <h3 class="fb-title">DRE Automática com <span class="acc-gold">Lucro Real</span></h3>
+      <ul class="fb-bullets">
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-gold">✓</span><span>DRE em tempo real: Receita Bruta → Lucro Líquido com todas deduções, taxas e IRPJ/CSLL</span></li>
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-gold">✓</span><span>Ponto de equilíbrio diário: sabe exatamente em qual dia do mês os custos fixos foram cobertos</span></li>
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-gold">✓</span><span>Pacote do Contador em 1 clique: ZIP com XMLs, DRE e extratos no formato Domínio/Alterdata/Sage</span></li>
+        <li class="fb-bullet scroll-into-view"><span class="bicon bi-gold">✓</span><span>Margem por produto e por marketplace — sabe onde está ganhando e onde está perdendo</span></li>
+      </ul>
+    </div>
+    <div class="fb-mockup">
+      <div class="wf-title">DRE — Maio 2026</div>
+      <div class="wf-bars">
+        <div class="wf-bar-wrap"><div class="wf-bar" style="height:110px;background:#4f378a"></div><div class="wf-label">Receita<br>Bruta</div></div>
+        <div class="wf-bar-wrap"><div class="wf-bar" style="height:28px;background:#ba1a1a;opacity:.7"></div><div class="wf-label">Taxas<br>ML</div></div>
+        <div class="wf-bar-wrap"><div class="wf-bar" style="height:20px;background:#ba1a1a;opacity:.6"></div><div class="wf-label">Impostos</div></div>
+        <div class="wf-bar-wrap"><div class="wf-bar" style="height:16px;background:#ba1a1a;opacity:.5"></div><div class="wf-label">CMV</div></div>
+        <div class="wf-bar-wrap"><div class="wf-bar" style="height:12px;background:#ba1a1a;opacity:.4"></div><div class="wf-label">Fixos</div></div>
+        <div class="wf-bar-wrap"><div class="wf-bar" style="height:74px;background:#0d6e3f"></div><div class="wf-label">Lucro<br>Líquido</div></div>
+      </div>
+      <div style="margin-top:14px;background:#fff8e1;border-radius:10px;padding:10px 14px;font-size:12px;color:#b8860b;font-weight:700">💰 Margem: 38,2% · Ponto de equilíbrio: dia 11</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DRE COMPLETA ═══ -->
+<section class="dre-section" id="dre">
+  <div class="dre-inner">
+    <div style="text-align:center;max-width:700px;margin:0 auto">
+      <h2 class="section-title scroll-into-view">DRE Completa — do faturamento ao lucro líquido real</h2>
+      <p class="section-sub scroll-into-view">Não é estimativa. É o lucro real depois de taxas, comissões, impostos, devoluções e custos fixos — em tempo real.</p>
+    </div>
+    <div class="dre-grid">
+      <div class="dre-steps">
+        <div class="dre-step scroll-into-view">
+          <div class="dre-step-num">1</div>
+          <div class="dre-step-content">
+            <h4>Receita Bruta por marketplace</h4>
+            <p>Consolida automaticamente as vendas de todos os canais: ML, Shopee, Amazon, TikTok Shop, Magalu e mais.</p>
+          </div>
+        </div>
+        <div class="dre-step scroll-into-view">
+          <div class="dre-step-num">2</div>
+          <div class="dre-step-content">
+            <h4>Deduções automáticas</h4>
+            <p>Comissões, frete, anúncio, cancelamentos e devoluções deduzidos automaticamente com rastreabilidade total por pedido.</p>
+          </div>
+        </div>
+        <div class="dre-step scroll-into-view">
+          <div class="dre-step-num">3</div>
+          <div class="dre-step-content">
+            <h4>Impostos e encargos calculados</h4>
+            <p>Simples Nacional, Lucro Presumido e Lucro Real — ICMS, PIS, COFINS, IRPJ e CSLL calculados conforme seu regime.</p>
+          </div>
+        </div>
+        <div class="dre-step scroll-into-view">
+          <div class="dre-step-num">4</div>
+          <div class="dre-step-content">
+            <h4>CMV e custos fixos integrados</h4>
+            <p>Importa o CMV direto do seu ERP/Bling/Tiny e aloca os custos fixos proporcionalmente por canal.</p>
+          </div>
+        </div>
+        <div class="dre-step scroll-into-view">
+          <div class="dre-step-num">5</div>
+          <div class="dre-step-content">
+            <h4>Lucro Líquido + ponto de equilíbrio</h4>
+            <p>Você vê o lucro real do dia, semana ou mês — e em qual dia do mês a operação entrou no azul.</p>
+          </div>
+        </div>
+        <div class="dre-step scroll-into-view">
+          <div class="dre-step-num">6</div>
+          <div class="dre-step-content">
+            <h4>Pacote do Contador automático</h4>
+            <p>Todo dia 5 gera ZIP com DRE, XMLs e extratos no formato Domínio, Alterdata, Contmatic ou Sage. Zero retrabalho.</p>
+          </div>
+        </div>
+      </div>
+      <div class="dre-visual scroll-into-view">
+        <div class="dre-header">
+          <h4>DRE — Junho 2026</h4>
+          <span class="dre-badge-live">● Tempo real</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">Receita Bruta Total</span>
+          <span class="dre-row-value green">R$ 148.320</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">(-) Comissões marketplaces</span>
+          <span class="dre-row-value red">- R$ 22.248</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">(-) Frete e logística</span>
+          <span class="dre-row-value red">- R$ 11.865</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">(-) Devoluções / cancelamentos</span>
+          <span class="dre-row-value red">- R$ 4.450</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">= Receita Líquida</span>
+          <span class="dre-row-value" style="color:var(--primary)">R$ 109.757</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">(-) CMV</span>
+          <span class="dre-row-value red">- R$ 44.890</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">= Lucro Bruto</span>
+          <span class="dre-row-value" style="color:var(--primary)">R$ 64.867</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">(-) Impostos (PIS/COFINS/ICMS)</span>
+          <span class="dre-row-value red">- R$ 13.420</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">(-) Custos fixos</span>
+          <span class="dre-row-value red">- R$ 8.200</span>
+        </div>
+        <div class="dre-row">
+          <span class="dre-row-label">(-) IRPJ / CSLL</span>
+          <span class="dre-row-value red">- R$ 4.860</span>
+        </div>
+        <div class="dre-row total">
+          <span style="color:var(--success)">= LUCRO LÍQUIDO REAL</span>
+          <span class="dre-row-value green">R$ 38.387</span>
+        </div>
+        <div class="dre-bar-wrap">
+          <div class="dre-bar-label"><span>Margem líquida</span><span style="color:var(--success);font-family:'JetBrains Mono',monospace">25,9%</span></div>
+          <div class="dre-bar-bg"><div class="dre-bar-fill" style="width:25.9%"></div></div>
+        </div>
+        <div style="margin-top:14px;background:#e8f5e9;border-radius:10px;padding:10px 14px;font-size:12px;color:#0d6e3f;font-weight:700;text-align:center">📅 Ponto de equilíbrio atingido no dia 11 deste mês</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DEVOLUÇÕES DEEP DIVE ═══ -->
+<section class="dev-section">
+  <div class="dev-inner">
+    <div style="text-align:center;max-width:700px;margin:0 auto">
+      <h2 class="section-title scroll-into-view">Sistema de Devoluções — do marketplace ao crédito fiscal</h2>
+      <p class="section-sub scroll-into-view">Cada devolução detectada, classificada, fiscalizada e contabilizada automaticamente. Sem intervenção manual.</p>
+    </div>
+    <div class="dev-grid">
+      <div class="dev-timeline">
+        <div class="dev-step scroll-into-view">
+          <div class="dev-icon-wrap">📥</div>
+          <div class="dev-content"><h4>Detecção automática</h4><p>Captura a solicitação de devolução no marketplace assim que o consumidor abre o processo — antes do pacote chegar ao CD.</p></div>
+        </div>
+        <div class="dev-step scroll-into-view">
+          <div class="dev-icon-wrap">🏷️</div>
+          <div class="dev-content"><h4>Classificação e motivo</h4><p>Classifica o motivo (defeito, desistência, troca, divergência) e define o fluxo correto: reembolso, reposição ou reparo.</p></div>
+        </div>
+        <div class="dev-step scroll-into-view">
+          <div class="dev-icon-wrap">📄</div>
+          <div class="dev-content"><h4>NF-e de devolução automática</h4><p>Emite NF-e com CFOP 1202/2202, alíquotas corretas por UF e regime tributário — recupera ICMS, PIS e COFINS do crédito fiscal.</p></div>
+        </div>
+        <div class="dev-step scroll-into-view">
+          <div class="dev-icon-wrap">💰</div>
+          <div class="dev-content"><h4>Impacto no financeiro</h4><p>Calcula automaticamente o impacto na DRE: custo da devolução, margem afetada, e crédito tributário a recuperar.</p></div>
+        </div>
+        <div class="dev-step scroll-into-view">
+          <div class="dev-icon-wrap">📦</div>
+          <div class="dev-content"><h4>Baixa no estoque</h4><p>Atualiza o estoque em tempo real com o destino do produto: reintegrado, descartado ou em análise de qualidade.</p></div>
+        </div>
+        <div class="dev-step scroll-into-view">
+          <div class="dev-icon-wrap">✅</div>
+          <div class="dev-content"><h4>1 clique para aprovar</h4><p>Você revisa o resumo — valor, NF-e, impacto financeiro — e clica Aprovar. Todo o resto já foi feito automaticamente.</p></div>
+        </div>
+      </div>
+      <div class="dev-mockup scroll-into-view">
+        <div class="dev-mockup-header">
+          <h4>Devoluções — Hoje</h4>
+          <span class="dev-badge">3 pendentes</span>
+        </div>
+        <div class="dev-item">
+          <div class="dev-item-icon">📦</div>
+          <div class="dev-item-info">
+            <div class="dev-item-name">Pedido #5820 — Shopee</div>
+            <div class="dev-item-sub">Smartwatch XPro · R$ 289,90 · Defeito de fábrica</div>
+          </div>
+          <span class="dev-item-status dev-status-ok">NF-e emitida</span>
+        </div>
+        <div class="dev-item">
+          <div class="dev-item-icon">🔄</div>
+          <div class="dev-item-info">
+            <div class="dev-item-name">Pedido #5817 — ML</div>
+            <div class="dev-item-sub">Fone BT Pro · R$ 145,00 · Desistência</div>
+          </div>
+          <span class="dev-item-status dev-status-p">Aguardando produto</span>
+        </div>
+        <div class="dev-item">
+          <div class="dev-item-icon">📦</div>
+          <div class="dev-item-info">
+            <div class="dev-item-name">Pedido #5814 — Amazon</div>
+            <div class="dev-item-sub">Carregador USB-C · R$ 67,00 · Troca</div>
+          </div>
+          <span class="dev-item-status dev-status-ok">NF-e emitida</span>
+        </div>
+        <div class="dev-nfe-row">
+          <span>📄 NF-e pendente: #5817 · CFOP 1202 · Crédito ICMS: R$ 18,85</span>
+          <button>Emitir agora</button>
+        </div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:#f3e5f5;border-radius:10px;padding:10px 14px;text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--primary);font-family:'JetBrains Mono',monospace">R$ 501,90</div>
+            <div style="font-size:11px;color:var(--text2);font-weight:600">em devoluções este mês</div>
+          </div>
+          <div style="background:#e8f5e9;border-radius:10px;padding:10px 14px;text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--success);font-family:'JetBrains Mono',monospace">R$ 78,40</div>
+            <div style="font-size:11px;color:var(--text2);font-weight:600">crédito fiscal recuperado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ IA FINANCEIRA ═══ -->
+<section class="ia-section" id="ia">
+  <div class="ia-inner">
+    <div>
+      <div class="ia-label">✦ Novo · IA Integrada</div>
+      <h2 class="ia-title">IA Financeira que entende o seu negócio — em português</h2>
+      <p class="ia-sub">Pergunte o que quiser sobre suas finanças. A IA analisa seus dados reais e responde com números, não com achismos.</p>
+      <ul class="ia-features">
+        <li class="ia-feature">Pergunta livre: <em>"Shopee pagou certo esse mês?"</em> — e recebe a análise completa</li>
+        <li class="ia-feature">Detecta padrões: <em>"Sua margem no ML caiu 3,2% em abril — aqui está o motivo"</em></li>
+        <li class="ia-feature">Alerta preditivo: <em>"Caixa negativo em 12 dias se o padrão atual continuar"</em></li>
+        <li class="ia-feature">Recomendações: <em>"3 produtos dão prejuízo — cortar o mix aumenta margem em 4,2%"</em></li>
+        <li class="ia-feature">Análise de divergências: identifica automaticamente erros de repasse e gera a contestação</li>
+      </ul>
+      <a href="https://app.reconcilepro.com.br/signup" class="btn-white cta-btn">Testar IA grátis por 14 dias</a>
+    </div>
+    <div class="ia-chat">
+      <div class="ia-chat-title"><span class="ia-dot-live"></span> ReconcilePro IA — ao vivo</div>
+      <div class="chat-bubble chat-user">A Shopee pagou certo essa semana?</div>
+      <div class="chat-bubble chat-ai">Analisei os <strong>47 repasses</strong> da Shopee de 26–31/mai. <strong>3 divergências</strong> encontradas: comissão cobrada acima do contrato em <strong>R$ 234,00</strong>. Já gerei as contestações — você só precisa aprovar. Quer ver o detalhamento?</div>
+      <div class="chat-bubble chat-user">Quando meu caixa vai ficar negativo?</div>
+      <div class="chat-bubble chat-ai">Com o padrão atual de saídas, o caixa entra no vermelho em <strong>18 dias</strong> (19/jun). Principal motivo: <strong>pico de devoluções na Shopee</strong> + parcela de fornecedor no dia 15. Recomendo antecipar o repasse do ML — isso resolve sem impacto operacional.</div>
+      <div class="chat-bubble chat-ai" style="display:flex;gap:0;padding:0">
+        <div class="chat-typing"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TODAS FUNCIONALIDADES ═══ -->
+<section class="fg-section" id="todas-funcionalidades">
+  <h2 class="fg-title scroll-into-view">Todas as funcionalidades</h2>
+  <p class="fg-sub scroll-into-view">Tudo que você precisa para dominar o financeiro do seu e-commerce marketplace.</p>
+  <div class="fg-grid">
+    <div class="feature-card scroll-into-view"><span class="fc-icon">⚖️</span><div class="fc-name">Conciliação Financeira 24/7</div><div class="fc-desc">Cruza pedidos × repasses × extrato bancário. 94,3% resolvidos automaticamente. 10 tipos de divergência detectados.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">📊</span><div class="fc-name">DRE em Tempo Real</div><div class="fc-desc">Receita Bruta → Lucro Líquido com todas deduções, impostos e custos fixos. Ponto de equilíbrio diário.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">🔄</span><div class="fc-name">Sistema de Devoluções</div><div class="fc-desc">Detecção, classificação, NF-e automática (CFOP 1202/2202) e recuperação de crédito fiscal em 1 clique.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">🤖</span><div class="fc-name">IA Financeira em Português</div><div class="fc-desc">Chat inteligente que responde perguntas sobre seus dados reais: repasses, margens, divergências e previsões.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">📅</span><div class="fc-name">Fluxo de Caixa Preditivo</div><div class="fc-desc">Projeção 60 dias com alertas 12 dias antes do saldo negativo. Calendário de recebimentos por marketplace.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">🔍</span><div class="fc-name">Auditoria de Repasses</div><div class="fc-desc">Auditoria automática de comissões, fretes e taxas. Evidências geradas automaticamente para contestação.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">📦</span><div class="fc-name">Estoque com Curva ABC</div><div class="fc-desc">Giro, cobertura em dias, margem por SKU e alertas de ruptura. Integra com Bling, Tiny e Omie.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">🏆</span><div class="fc-name">Margem por Produto & Canal</div><div class="fc-desc">Vê qual produto dá lucro em qual marketplace. Identifica onde está ganhando e onde está perdendo dinheiro.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">📁</span><div class="fc-name">Pacote do Contador Mensal</div><div class="fc-desc">ZIP automático todo dia 5 com XMLs, DRE e extratos nos formatos Domínio, Alterdata, Contmatic e Sage.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">🧾</span><div class="fc-name">Emissão de NF-e Integrada</div><div class="fc-desc">Emissão de NF-e de venda e devolução via Focus NFe (parceiro SEFAZ). CFOP correto por tipo de operação.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">👥</span><div class="fc-name">Multi-Conta & Multi-Canal</div><div class="fc-desc">Gerencie várias contas de seller em uma tela. Permissões por papel: Admin, Financeiro e Contador.</div></div>
+    <div class="feature-card scroll-into-view"><span class="fc-icon">🔔</span><div class="fc-name">Alertas Preditivos</div><div class="fc-desc">Caixa negativo, repasse atrasado, margem negativa, comissão acima do contrato — alertas antes do problema.</div></div>
+  </div>
+  <div class="fg-cta">
+    <a href="https://app.reconcilepro.com.br/signup" class="btn-outline-white cta-btn">Começar trial grátis — ver todas na prática</a>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="test-section">
+  <h2 class="test-title scroll-into-view">Por que sellers escolhem <span>ReconcilePro</span></h2>
+  <div class="test-wrapper">
+    <div class="testimonial-track">
+      <div class="testimonial-card"><div class="t-stars">⭐⭐⭐⭐⭐</div><p class="t-text">"Antes gastava 8h/mês só em devoluções. Hoje faço em 1 clique. Recuperei R$ 14 mil que nem sabia que existiam."</p><div class="t-name">Carla Mendonça</div><div class="t-role">Operadora · Acme Eletrônicos</div></div>
+      <div class="testimonial-card"><div class="t-stars">⭐⭐⭐⭐⭐</div><p class="t-text">"Gerencio 3 contas de seller. O calendário de recebimentos virou minha tela inicial — caixa nunca mais foi surpresa."</p><div class="t-name">Rafael Souza</div><div class="t-role">Gerente Financeiro · Tech Store BR</div></div>
+      <div class="testimonial-card"><div class="t-stars">⭐⭐⭐⭐⭐</div><p class="t-text">"Meus clientes me mandam os XMLs já no formato do Domínio. Economizo 4h por cliente todo mês. A DRE automática é perfeita."</p><div class="t-name">Ana Paula Ferreira</div><div class="t-role">Contadora · Escritório Y</div></div>
+      <div class="testimonial-card"><div class="t-stars">⭐⭐⭐⭐⭐</div><p class="t-text">"Descobri que 3 produtos davam prejuízo e nem sabia. Cortei do mix, a margem subiu 4,2%. A IA me mostrou isso em segundos."</p><div class="t-name">Marcos Oliveira</div><div class="t-role">CEO · Casa & Decoração</div></div>
+      <div class="testimonial-card"><div class="t-stars">⭐⭐⭐⭐⭐</div><p class="t-text">"Antes gastava 8h/mês só em devoluções. Hoje faço em 1 clique. Recuperei R$ 14 mil que nem sabia que existiam."</p><div class="t-name">Carla Mendonça</div><div class="t-role">Operadora · Acme Eletrônicos</div></div>
+      <div class="testimonial-card"><div class="t-stars">⭐⭐⭐⭐⭐</div><p class="t-text">"Gerencio 3 contas de seller. O calendário de recebimentos virou minha tela inicial — caixa nunca mais foi surpresa."</p><div class="t-name">Rafael Souza</div><div class="t-role">Gerente Financeiro · Tech Store BR</div></div>
+      <div class="testimonial-card"><div class="t-stars">⭐⭐⭐⭐⭐</div><p class="t-text">"Meus clientes me mandam os XMLs já no formato do Domínio. Economizo 4h por cliente todo mês. A DRE automática é perfeita."</p><div class="t-name">Ana Paula Ferreira</div><div class="t-role">Contadora · Escritório Y</div></div>
+      <div class="testimonial-card"><div class="t-stars">⭐⭐⭐⭐⭐</div><p class="t-text">"Descobri que 3 produtos davam prejuízo e nem sabia. Cortei do mix, a margem subiu 4,2%. A IA me mostrou isso em segundos."</p><div class="t-name">Marcos Oliveira</div><div class="t-role">CEO · Casa & Decoração</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PREÇOS ═══ -->
+<section class="pricing-section" id="precos">
+  <div style="text-align:center;margin-bottom:56px">
+    <h2 class="section-title scroll-into-view">Planos que crescem com você</h2>
+    <p class="section-sub scroll-into-view">14 dias grátis em qualquer plano. Sem cartão. Cancele quando quiser.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card scroll-into-view">
+      <div class="p-plan">Starter</div>
+      <div class="p-price">R$ 97</div>
+      <div class="p-price-lbl">/mês</div>
+      <div class="p-desc">Pra quem está começando a escalar</div>
+      <ul class="p-features">
+        <li>até 500 pedidos/mês · 2 marketplaces</li>
+        <li>Conciliação automática</li>
+        <li>DRE básica</li>
+        <li>Sistema de devoluções</li>
+        <li>Suporte por chat</li>
+      </ul>
+      <a href="https://app.reconcilepro.com.br/signup" class="btn-outline cta-btn">Começar trial grátis</a>
+    </div>
+    <div class="pricing-card popular scroll-into-view">
+      <div class="pricing-badge">⭐ Mais popular</div>
+      <div class="p-plan">Pro</div>
+      <div class="p-price">R$ 297</div>
+      <div class="p-price-lbl">/mês</div>
+      <div class="p-desc">Pra quem leva o financeiro a sério</div>
+      <ul class="p-features">
+        <li>até 5.000 pedidos/mês</li>
+        <li>Marketplaces ilimitados</li>
+        <li>DRE completa + ponto de equilíbrio</li>
+        <li>IA Financeira integrada</li>
+        <li>Devoluções com NF-e automática</li>
+        <li>Fluxo de caixa preditivo</li>
+        <li>Pacote do Contador mensal</li>
+        <li>Suporte ao vivo seg–sex</li>
+      </ul>
+      <a href="https://app.reconcilepro.com.br/signup" class="btn-primary cta-btn">Começar trial grátis</a>
+    </div>
+    <div class="pricing-card scroll-into-view">
+      <div class="p-plan">Enterprise</div>
+      <div class="p-price" style="font-size:30px">Customizado</div>
+      <div class="p-price-lbl">&nbsp;</div>
+      <div class="p-desc">Pra operações e agências</div>
+      <ul class="p-features">
+        <li>Pedidos ilimitados · API dedicada</li>
+        <li>SLA contratual · CSM exclusivo</li>
+        <li>Onboarding personalizado</li>
+        <li>White-label disponível</li>
+        <li>Suporte 24/7</li>
+      </ul>
+      <a href="https://wa.me/5511XXXXXXXXX" class="btn-outline cta-btn">Falar com especialista</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CERTS ═══ -->
+<section class="certs-section">
+  <div class="certs-inner">
+    <div style="text-align:center;margin-bottom:48px">
+      <h2 class="section-title scroll-into-view">Segurança bancária. Conformidade total.</h2>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card scroll-into-view"><span class="cert-icon">🔒</span><div class="cert-title">Conformidade LGPD</div><div class="cert-desc">OAuth2 oficial — sem armazenar senhas. Tokens temporários, criptografia ponta a ponta.</div></div>
+      <div class="cert-card scroll-into-view"><span class="cert-icon">☁️</span><div class="cert-title">Infraestrutura AWS</div><div class="cert-desc">Uptime 99,9%, backups automáticos e criptografia em repouso e em trânsito.</div></div>
+      <div class="cert-card scroll-into-view"><span class="cert-icon">📄</span><div class="cert-title">NF-e via Focus NFe</div><div class="cert-desc">Parceiro homologado SEFAZ para emissão de NF-e com CFOP correto por tipo de operação.</div></div>
+    </div>
+    <div class="logos-strip scroll-into-view">
+      <span>Domínio</span><span>Alterdata</span><span>Contmatic</span><span>Sage</span><span>Focus NFe</span><span>AWS</span><span>PostgreSQL</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="faq-section" id="faq">
+  <div style="text-align:center;margin-bottom:48px">
+    <h2 class="section-title scroll-into-view">Perguntas frequentes</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item scroll-into-view"><div class="faq-question"><span>Vocês têm acesso à minha senha do marketplace?</span><div class="faq-icon">+</div></div><div class="faq-content"><div class="faq-answer">Não. Usamos OAuth2 oficial. Você autoriza sem compartilhar senha — igual ao que seu banco usa com apps de finanças.</div></div></div>
+    <div class="faq-item scroll-into-view"><div class="faq-question"><span>Quanto tempo leva pra conectar?</span><div class="faq-icon">+</div></div><div class="faq-content"><div class="faq-answer">2 minutos por marketplace. Clica em Conectar, autoriza na página do marketplace, pronto.</div></div></div>
+    <div class="faq-item scroll-into-view"><div class="faq-question"><span>A DRE funciona com qualquer regime tributário?</span><div class="faq-icon">+</div></div><div class="faq-content"><div class="faq-answer">Sim. Calculamos impostos para Simples Nacional, Lucro Presumido e Lucro Real — ICMS, PIS, COFINS, IRPJ e CSLL conforme seu enquadramento.</div></div></div>
+    <div class="faq-item scroll-into-view"><div class="faq-question"><span>Funciona com meu contador atual?</span><div class="faq-icon">+</div></div><div class="faq-content"><div class="faq-answer">Sim. Geramos no formato Domínio, Alterdata, Contmatic e Sage. Seu contador não muda nada no fluxo atual.</div></div></div>
+    <div class="faq-item scroll-into-view"><div class="faq-question"><span>Posso cancelar quando quiser?</span><div class="faq-icon">+</div></div><div class="faq-content"><div class="faq-answer">Sim, sem multa. Cancele pelo painel em 1 clique. O trial de 14 dias não pede cartão.</div></div></div>
+  </div>
+</section>
+
+<!-- ═══ CTA FINAL ═══ -->
+<section style="padding:60px 48px 80px">
+  <div class="cta-final-block">
+    <h2 class="cta-hl scroll-into-view">Pare de adivinhar.</h2>
+    <p class="cta-sub scroll-into-view">Comece a saber exatamente onde está cada centavo — DRE real, devoluções automatizadas e IA financeira no mesmo lugar.</p>
+    <div class="cta-btns">
+      <a href="https://app.reconcilepro.com.br/signup" class="btn-white-solid cta-btn">Começar trial grátis — 14 dias</a>
+      <a href="#" class="btn-outline-white-lg cta-btn">Agendar demo ao vivo</a>
+    </div>
+    <div class="cta-trust">
+      <span>Sem cartão</span><span>Cancele quando quiser</span><span>Suporte ao vivo seg–sex</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a href="#" class="footer-logo"><div class="footer-logo-icon">RP</div><span class="footer-logo-word">Reconcile<span>Pro</span></span></a>
+      <p class="footer-desc">Inteligência financeira pra quem vende em marketplaces. DRE completa, conciliação automática, devoluções e IA integrada.</p>
+      <div class="footer-socials">
+        <a href="#" class="f-social">Instagram</a>
+        <a href="#" class="f-social">LinkedIn</a>
+        <a href="#" class="f-social">YouTube</a>
+        <a href="https://wa.me/5511XXXXXXXXX" class="f-social">WhatsApp</a>
+      </div>
+    </div>
+    <div>
+      <div class="f-col-title">Produto</div>
+      <ul class="footer-links"><li><a href="#funcionalidades">Funcionalidades</a></li><li><a href="#dre">DRE</a></li><li><a href="#devolucoes">Devoluções</a></li><li><a href="#ia">IA Financeira</a></li><li><a href="#precos">Preços</a></li></ul>
+    </div>
+    <div>
+      <div class="f-col-title">Suporte</div>
+      <ul class="footer-links"><li><a href="#">Agendar demo</a></li><li><a href="https://wa.me/5511XXXXXXXXX">WhatsApp</a></li><li><a href="#">Central de Ajuda</a></li><li><a href="#">Status</a></li></ul>
+    </div>
+    <div>
+      <div class="f-col-title">Legal</div>
+      <ul class="footer-links"><li><a href="#">Termos de Uso</a></li><li><a href="#">Privacidade (LGPD)</a></li><li><a href="#">Cookies</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 ReconcilePro · Todos os direitos reservados · CNPJ XX.XXX.XXX/0001-XX</p>
+    <p class="footer-disc">ReconcilePro não é afiliada, patrocinada ou endossada por Mercado Livre, Shopee, Amazon ou qualquer outro marketplace.</p>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── WORD SPLIT MANUAL ──
+function splitWords(el) {
+  const result = [];
+  el.childNodes.forEach(node => {
+    if (node.nodeType === 3) {
+      // text node
+      node.textContent.trim().split(/\s+/).filter(Boolean).forEach((word, i, arr) => {
+        const w = document.createElement('span');
+        w.textContent = word;
+        w.style.display = 'inline-block';
+        el.insertBefore(w, node);
+        if (i < arr.length - 1) el.insertBefore(document.createTextNode('\u00A0'), node);
+        result.push(w);
+      });
+      node.textContent = '';
+    } else if (node.nodeType === 1) {
+      // element node (spans etc)
+      const inner = node.textContent.trim().split(/\s+/).filter(Boolean);
+      node.textContent = '';
+      inner.forEach((word, i) => {
+        const w = document.createElement('span');
+        w.textContent = word;
+        w.style.display = 'inline-block';
+        // inherit styles
+        if (node.className) w.className = node.className;
+        if (node.style.cssText) w.style.cssText += node.style.cssText;
+        if (i > 0) node.appendChild(document.createTextNode('\u00A0'));
+        node.appendChild(w);
+        result.push(w);
+      });
+    }
+  });
+  return result;
+}
+
+// ── [G] HERO TIMELINE ──
+window.addEventListener('load', () => {
+  const headline = document.querySelector('.hero-headline');
+  const words = splitWords(headline);
+
+  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+  tl
+    .from('.navbar',       { opacity:0, y:-20, duration:0.6 })
+    .from('.hero-badge',   { opacity:0, y:20,  duration:0.5 }, '-=0.2')
+    .from(words,           { opacity:0, y:40,  stagger:0.08, duration:0.9 }, '-=0.1')
+    .from('.hero-subtitle',{ opacity:0, y:24,  duration:0.7 }, '-=0.4')
+    .from('.hero-ctas',    { opacity:0, y:20,  duration:0.6 }, '-=0.3')
+    .from('.hero-mockup',  { opacity:0, x:40,  duration:0.9 }, '-=0.6')
+    .from('.floating-card',{ opacity:0, y:20,  stagger:0.15, duration:0.5 }, '-=0.3');
+});
+
+// ── [F] NAVBAR SCROLL ──
+window.addEventListener('scroll', () => {
+  document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── [B] SCROLL INTO VIEW ──
+gsap.utils.toArray('.scroll-into-view').forEach(el => {
+  gsap.from(el, {
+    scrollTrigger: { trigger: el, start: 'top 88%' },
+    opacity: 0, y: 48, duration: 0.8, ease: 'sine.out'
+  });
+});
+
+// ── [C] METRICS GROW + COUNTER ──
+const kpis = [
+  { id: 'kpi1', val: 12890, fmt: v => 'R$ ' + Math.round(v).toLocaleString('pt-BR') },
+  { id: 'kpi2', val: 94.3,  fmt: v => v.toFixed(1).replace('.',',') + '%' },
+  { id: 'kpi3', val: 15,    fmt: v => Math.round(v) + 'h' },
+];
+let kpiDone = false;
+ScrollTrigger.create({
+  trigger: '.metrics-banner',
+  start: 'top 75%',
+  onEnter: () => {
+    if (kpiDone) return; kpiDone = true;
+    gsap.from('.grow-element', { opacity:0, scale:0.7, duration:1, ease:'expo.out', stagger:0.15 });
+    kpis.forEach(k => {
+      const el = document.getElementById(k.id);
+      if (!el) return;
+      const obj = { v: 0 };
+      gsap.to(obj, { v: k.val, duration: 1.8, ease: 'power2.out', delay: 0.3,
+        onUpdate: () => { el.textContent = k.fmt(obj.v); }
+      });
+    });
+  }
+});
+
+// ── [D] PARALLAX ──
+gsap.to('.hero-mockup', {
+  scrollTrigger: { trigger: '.hero-wrap', start:'top top', end:'bottom top', scrub:0.5 },
+  y: -60, ease: 'none'
+});
+gsap.to('.hero-badge', {
+  scrollTrigger: { trigger: '.hero-wrap', start:'top top', end:'bottom top', scrub:0.5 },
+  y: -30, ease: 'none'
+});
+
+// ── [E] HOVER ──
+document.querySelectorAll('.cta-btn').forEach(b => {
+  b.addEventListener('mouseenter', () => gsap.to(b, { scale:1.04, duration:0.25, ease:'power2.out' }));
+  b.addEventListener('mouseleave', () => gsap.to(b, { scale:1.0, duration:0.2, ease:'power2.in' }));
+});
+document.querySelectorAll('.feature-card, .pricing-card, .testimonial-card, .cert-card').forEach(c => {
+  c.addEventListener('mouseenter', () => gsap.to(c, { y:-6, duration:0.3, ease:'power2.out', boxShadow:'0 16px 48px rgba(79,55,138,.2)' }));
+  c.addEventListener('mouseleave', () => gsap.to(c, { y:0,  duration:0.25, ease:'power2.in', boxShadow:'0 1px 4px rgba(0,0,0,.08)' }));
+});
+
+// ── [H] TESTIMONIALS LOOP ──
+const testTL = gsap.to('.testimonial-track', { x:'-50%', duration:40, ease:'none', repeat:-1 });
+document.querySelector('.test-wrapper').addEventListener('mouseenter', () => testTL.pause());
+document.querySelector('.test-wrapper').addEventListener('mouseleave', () => testTL.resume());
+
+// ── [I] PIPELINE DOTS ──
+let pipeStarted = false;
+ScrollTrigger.create({
+  trigger: '.pipeline-demo',
+  start: 'top 70%',
+  onEnter: () => {
+    if (pipeStarted) return; pipeStarted = true;
+    const dots = document.querySelectorAll('.pipeline-dot');
+    gsap.set(dots, { backgroundColor:'#ccc' });
+    const ptl = gsap.timeline({ repeat:-1, repeatDelay:1.5 });
+    ptl
+      .to(dots, { backgroundColor:'#0d6e3f', scale:1.3, duration:0.3, stagger:0.4, ease:'power2.out' })
+      .to(dots, { scale:1, duration:0.2, stagger:0.1 });
+  }
+});
+
+// ── [J] FAQ ACCORDION ──
+document.querySelectorAll('.faq-item').forEach(item => {
+  const q = item.querySelector('.faq-question');
+  const c = item.querySelector('.faq-content');
+  const icon = item.querySelector('.faq-icon');
+  let open = false;
+  gsap.set(c, { height:0, opacity:0 });
+  q.addEventListener('click', () => {
+    document.querySelectorAll('.faq-item').forEach(other => {
+      if (other === item) return;
+      gsap.to(other.querySelector('.faq-content'), { height:0, opacity:0, duration:0.3 });
+      gsap.to(other.querySelector('.faq-icon'), { rotation:0, duration:0.3 });
+      other._open = false;
+    });
+    open = !open;
+    gsap.to(c, { height: open ? 'auto' : 0, opacity: open ? 1 : 0, duration: open ? 0.4 : 0.3, ease: open ? 'power2.out' : 'power2.in' });
+    gsap.to(icon, { rotation: open ? 45 : 0, duration:0.3 });
+  });
+});
+</script>
+</body>
+</html>
